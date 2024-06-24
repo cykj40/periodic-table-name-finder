@@ -1,1 +1,1 @@
-# periodic-table-name-finder
+# periodic-table-word-finder
