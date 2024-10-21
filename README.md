@@ -51,5 +51,5 @@ Whether you’re a student learning chemistry, a word enthusiast, or just someon
 
 
 
-## About: simple fun app to see if you can spell words with element symbols on the periodic table.   
+
 
