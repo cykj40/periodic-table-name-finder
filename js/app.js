@@ -5,19 +5,19 @@ if (/complete|interactive|loaded/.test(document.readyState)) {
 	ready();
 }
 else {
-	document.addEventListener("DOMContentLoaded",ready);
+	document.addEventListener("DOMContentLoaded", ready);
 }
 
 
 // ****************************
 
-function ready(){
+function ready() {
 	var enterWordEl = document.getElementById("enter-word");
 	var spellBtn = document.getElementById("spell-btn");
 	var wordSpellingEl = document.getElementById("word-spelling");
 
-	enterWordEl.addEventListener("keydown",onKeydown,false);
-	spellBtn.addEventListener("click",checkWord,false);
+	enterWordEl.addEventListener("keydown", onKeydown, false);
+	spellBtn.addEventListener("click", checkWord, false);
 
 
 	// ********************************
@@ -29,12 +29,16 @@ function ready(){
 	}
 
 	function checkWord() {
-		var inputWord = enterWordEl.value.toLowerCase().trim();
+		var inputWord = enterWordEl.value
+			.toLowerCase()
+			.trim()
+			.replace(/[^a-z]/g, ''); // Only allow letters
+
 		enterWordEl.value = inputWord;
 
 		// validate the input
-		if (!/^[a-z]{3,}$/.test(inputWord)) {
-			alert("Enter a word at least 3 letters long!");
+		if (!/^[a-z]{3,30}$/.test(inputWord)) {
+			alert("Please enter a word between 3 and 30 letters long!");
 			return;
 		}
 

@@ -7,15 +7,25 @@ let elements;
 let symbols = {}; // Initialize symbols as an object
 
 async function loadPeriodicTable() {
-    const response = await fetch("periodic-table.json");
-    elements = await response.json();
-    for (const element of elements) {
-        symbols[element.symbol.toLowerCase()] = element;
+    try {
+        const response = await fetch("periodic-table.json");
+        if (!response.ok) {
+            throw new Error('Failed to load periodic table data');
+        }
+        elements = await response.json();
+        for (const element of elements) {
+            symbols[element.symbol.toLowerCase()] = element;
+        }
+    } catch (error) {
+        console.error('Error loading periodic table:', error);
+        // Add user-friendly error message
+        document.getElementById('word-spelling').innerHTML =
+            "<strong>Unable to load periodic table data. Please refresh the page.</strong>";
     }
 }
 
 // Call loadPeriodicTable immediately to ensure it's ready
-loadPeriodicTable(); 
+loadPeriodicTable();
 
 function findCandidates(inputWord) {
     const oneLetterSymbols = [];
@@ -23,7 +33,7 @@ function findCandidates(inputWord) {
 
     for (let i = 0; i < inputWord.length; i++) {
         const one = inputWord[i].toLowerCase(); // Convert to lowercase for case-insensitivity
-        const two = inputWord.slice(i, i + 2).toLowerCase(); 
+        const two = inputWord.slice(i, i + 2).toLowerCase();
 
         if (one in symbols && !oneLetterSymbols.includes(one)) {
             oneLetterSymbols.push(one);
@@ -33,7 +43,7 @@ function findCandidates(inputWord) {
             twoLetterSymbols.push(two);
         }
     }
-    
+
     return [...twoLetterSymbols, ...oneLetterSymbols];
 }
 
@@ -51,13 +61,13 @@ function spellWord(candidates, charsLeft) {
             }
         }
     }
-    
+
     return []; // No valid spelling found
 }
 
 function check(inputWord) {
     const candidates = findCandidates(inputWord);
-    return spellWord(candidates, inputWord.toLowerCase()); 
+    return spellWord(candidates, inputWord.toLowerCase());
 }
 
 function lookup(elementSymbol) {
